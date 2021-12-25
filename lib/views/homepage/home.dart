@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pondits_notebook/database/database_helper.dart';
-import 'package:pondits_notebook/drawer/drawer_page.dart';
+import 'package:pondits_notebook/views/drawer/drawer_page.dart';
 import 'package:pondits_notebook/models/notebook.dart';
-import 'package:pondits_notebook/note_add_page/note_add_page.dart';
+import 'package:pondits_notebook/views/note_add_page/note_add_page.dart';
 import 'package:pondits_notebook/utils/app_colors.dart';
+import 'package:pondits_notebook/utils/custom_toast.dart';
+import 'package:pondits_notebook/views/note_update_page/note_update_page.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -67,8 +70,28 @@ class _HomePageState extends State<HomePage> {
   Future<void> showMenuSelection(String value, int id, NoteBook mbook) async {
     switch (value) {
       case 'Delete':
+        setState(() {
+          isLoading = true;
+        });
+        deleteConfirmationAlertBox(id);
         break;
       case 'Edit':
+        bool isUpdated = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return NoteUpdatePage(
+              notebook: mbook,
+            );
+          }),
+        );
+
+        if (isUpdated) {
+          setState(() {
+            isLoading = true;
+          });
+          noteList = [];
+          fetchNoteList();
+        }
         break;
     }
   }
@@ -78,7 +101,9 @@ class _HomePageState extends State<HomePage> {
     if (query.isNotEmpty) {
       List<NoteBook> newList = [];
       for (NoteBook noteBook in storeNoteList) {
-        if (noteBook.title.toLowerCase().contains(query.toLowerCase())) {
+        if (noteBook.title.toLowerCase().contains(query.toLowerCase()) ||
+            noteBook.content.toLowerCase().contains(query.toLowerCase()) ||
+            noteBook.date.toLowerCase().contains(query.toLowerCase())) {
           newList.add(noteBook);
         }
       }
@@ -103,6 +128,50 @@ class _HomePageState extends State<HomePage> {
     fetchNoteList();
     Navigator.pop(context);
   }
+
+  void onDelete(int id) async {
+    int isDeleted = await _db.deleteNote(id);
+    if (isDeleted == 1) {
+      CustomToast.toast('Note deleted');
+      setState(() {
+        isLoading = true;
+      });
+      showList();
+    } else {
+      CustomToast.toast('Note not deleted');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void deleteConfirmationAlertBox(int id) {
+    Alert(
+      context: context,
+      type: AlertType.warning,
+      title: "Delete ALERT",
+      desc: "Do You want to delete this Note?",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => onDelete(id),
+          color: Colors.teal,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => showList(),
+          color: Colors.red,
+        )
+      ],
+    ).show();
+  }
+
 
   @override
   Widget build(BuildContext context) {
