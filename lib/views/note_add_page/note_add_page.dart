@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pondits_notebook/database/database_helper.dart';
-import 'package:pondits_notebook/models/notebook.dart';
-import 'package:pondits_notebook/utils/app_colors.dart';
-import 'package:pondits_notebook/utils/custom_toast.dart';
-import 'package:pondits_notebook/utils/date_formatter.dart';
+import 'package:KeepNote/database/database_helper.dart';
+import 'package:KeepNote/models/notebook.dart';
+import 'package:KeepNote/utils/app_colors.dart';
+import 'package:KeepNote/utils/custom_toast.dart';
+import 'package:KeepNote/utils/date_formatter.dart';
 
 class NoteAddPage extends StatefulWidget {
   @override

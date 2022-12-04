@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pondits_notebook/database/database_helper.dart';
-import 'package:pondits_notebook/views/drawer/drawer_page.dart';
-import 'package:pondits_notebook/models/notebook.dart';
-import 'package:pondits_notebook/views/note_add_page/note_add_page.dart';
-import 'package:pondits_notebook/utils/app_colors.dart';
-import 'package:pondits_notebook/utils/custom_toast.dart';
-import 'package:pondits_notebook/views/note_update_page/note_update_page.dart';
+import 'package:KeepNote/database/database_helper.dart';
+import 'package:KeepNote/views/drawer/drawer_page.dart';
+import 'package:KeepNote/models/notebook.dart';
+import 'package:KeepNote/views/note_add_page/note_add_page.dart';
+import 'package:KeepNote/utils/app_colors.dart';
+import 'package:KeepNote/utils/custom_toast.dart';
+import 'package:KeepNote/views/note_update_page/note_update_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -52,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchNoteList() async {
     try {
       var notes = await _db.fetchNoteList();
-      if (notes.length > 0) {
+      if (notes.isNotEmpty) {
         setState(() {
           noteList.addAll(notes);
           storeNoteList.addAll(notes);
@@ -107,7 +109,7 @@ class _HomePageState extends State<HomePage> {
           newList.add(noteBook);
         }
       }
-      if (newList.length <= 0) {
+      if (newList.isEmpty) {
         setState(() {
           noData = "No data found";
         });
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
       desc: "Do You want to delete this Note?",
       buttons: [
         DialogButton(
-          child: Text(
+          child: const Text(
             "Yes",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
@@ -161,7 +163,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.teal,
         ),
         DialogButton(
-          child: Text(
+          child: const Text(
             "No",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
@@ -177,10 +179,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: Container(
-          margin: EdgeInsets.only(right: 20, bottom: 20),
+          margin: const EdgeInsets.only(right: 20, bottom: 20),
           child: FloatingActionButton(
               elevation: 0.0,
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               backgroundColor: AppColors.qColorPrimary,
               onPressed: () async {
                 bool isAdded = await Navigator.push(
@@ -206,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                 Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'keep',
                         style: TextStyle(
                           color: Colors.white,
@@ -231,7 +233,7 @@ class _HomePageState extends State<HomePage> {
           drawer: DrawerPage(),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -239,11 +241,11 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(
+                        const Icon(
                           Icons.menu_book,
                           size: 40,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Text(
@@ -255,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                         _greeting != null
                             ? Text(
                                 _greeting,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 15,
                                   fontFamily: 'NunitoSans',
@@ -267,15 +269,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           height: 25,
                         ),
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 0, bottom: 0, left: 15, right: 15),
                           height: 55,
                           child: TextField(
@@ -283,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                               filterSearchResult(value);
                             },
                             // controller: _editingController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'search by title...',
                               prefixIcon: Icon(Icons.search),
                               fillColor: AppColors.qColorLight,
@@ -306,28 +308,27 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         !isLoading
                             ? noteList.contains(null) || noteList.length <= 0
-                                ? Container(
-                                    child: Center(
-                                        child:
-                                            Text("No note available, add new")))
+                                ? const Center(
+                                    child:
+                                        Text("No note available, add new"))
                                 : ListView.separated(
                                     separatorBuilder: (context, index) =>
-                                        SizedBox(
+                                        const SizedBox(
                                       height: 5,
                                     ),
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemCount: noteList.length,
                                     itemBuilder: (context, index) {
                                       return noteListItem(noteList[index]);
                                     },
                                   )
-                            : Center(
+                            : const Center(
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       AppColors.qColorPrimary),
@@ -345,7 +346,7 @@ class _HomePageState extends State<HomePage> {
 
   Padding noteListItem(NoteBook noteBook) {
     return Padding(
-      padding: EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 0),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -387,7 +388,7 @@ class _HomePageState extends State<HomePage> {
               ),
               PopupMenuButton<String>(
                 padding: EdgeInsets.zero,
-                icon: Icon(Icons.more_vert),
+                icon: const Icon(Icons.more_vert),
                 onSelected: (value) {
                   showMenuSelection(value, noteBook.id, noteBook);
                 },

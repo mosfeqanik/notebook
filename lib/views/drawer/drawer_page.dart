@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pondits_notebook/database/database_helper.dart';
-import 'package:pondits_notebook/utils/app_colors.dart';
-import 'package:pondits_notebook/utils/custom_toast.dart';
-import 'package:pondits_notebook/views/homepage/home.dart';
+import 'package:KeepNote/database/database_helper.dart';
+import 'package:KeepNote/utils/app_colors.dart';
+import 'package:KeepNote/utils/custom_toast.dart';
+import 'package:KeepNote/views/homepage/home.dart';
 
 
 class DrawerPage extends StatefulWidget {
