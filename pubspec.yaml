@@ -10,11 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^2.0.1
-  path_provider: ^2.0.8
-  fluttertoast: ^8.0.7
+  sqflite: ^2.2.1
+  path_provider: ^2.0.11
+  fluttertoast: ^8.1.1
   cupertino_icons: ^1.0.2
-  rflutter_alert: ^2.0.2
+  rflutter_alert: ^2.0.4
 
 dev_dependencies:
   flutter_test:
